@@ -9,10 +9,15 @@ function prompt() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      prompt: 'Once upon a time',
+      prompt: 'Tell me a spooky story in 200 words or less.',
     }),
   }
-  ).then((r) => r.json())
+  ).then(response => {
+    return response.json()
+
+  }).then(data => {
+    document.getElementById("story").innerHTML = data.reply
+  })
 }
 
 function Home() {
@@ -29,6 +34,9 @@ function Home() {
         </Button>
       </div>
       <hr className={styles.hr} />
+      <div id="story">
+
+      </div>
     </main>
   )
 }
