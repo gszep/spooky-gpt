@@ -1,7 +1,12 @@
 // express server configuration
 const express = require('express')
+const cors = require("cors")
 const app = express()
 
+// Allow cross-origin requests (CORS)
+app.use(cors());
+
+// Body parser middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
@@ -14,6 +19,7 @@ const openai = new OpenAI({
 
 // main prompt function
 app.post('/prompt', (request, respose) => {
+    console.log("[Prompt] Received prompt for story")
 
     // prompt for the GPT-3 engine
     openai.chat.completions.create({
@@ -24,6 +30,7 @@ app.post('/prompt', (request, respose) => {
 
         // response from the GPT-3 engine
     }).then((reply) => {
+        console.log("[GPT] Responded with story")
         return respose.status(200).json({
             reply: reply.choices[0].message.content,
         })
@@ -34,6 +41,13 @@ app.post('/prompt', (request, respose) => {
             error: error,
         })
     })
+})
+
+app.options("/prompt", (request, response) => {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Headers", "*");
+    response.setHeader("Access-Control-Allow-Methods", "*");
+    response.sendStatus(200);
 })
 
 const PORT = 8080

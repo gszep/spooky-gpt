@@ -4,7 +4,7 @@ import ClickCount from '../components/ClickCount'
 import styles from '../styles/home.module.css'
 
 function prompt() {
-  return fetch('/prompt', {
+  return fetch('http://localhost:8080/prompt', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -12,7 +12,8 @@ function prompt() {
     body: JSON.stringify({
       prompt: 'Once upon a time',
     }),
-  }).then((r) => r.json())
+  }
+  ).then((r) => r.json())
 }
 
 function Home() {
